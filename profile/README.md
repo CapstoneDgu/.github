@@ -19,14 +19,24 @@ LLM Agentic AI 기반 배리어프리 자율주문 키오스크입니다.
 
 ## 🏗️ 시스템 구조
 
-```
-React (키오스크 UI)
-    ↕  REST / WebSocket
-NUNCHI-AI  (FastAPI — AI 오케스트레이션)
-    ↕  HTTP REST
-NUNCHI  (Spring Boot — 비즈니스 로직)
-    ↕
-PostgreSQL + Redis
+```mermaid
+graph TD
+    A["Kiosk UI"]
+    B["NUNCHI-AI\nFastAPI · LangGraph"]
+    C["NUNCHI\nSpring Boot"]
+    D["Kiosk MCP Server"]
+    E[("PostgreSQL")]
+    F[("Redis")]
+    H["Claude Desktop (Smithery)"]
+
+    A -->|"REST + SSE 스트리밍"| B
+    A -->|"REST"| C
+    B -->|"HTTP REST"| C
+    B -->|"streamable HTTP"| D
+    D -->|"HTTP REST"| C
+    C --- E
+    C --- F
+    H -->|"SSE"| D
 ```
 
 <br/>
